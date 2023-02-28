@@ -1,0 +1,49 @@
+function shortestCellPath(grid, sr, sc, tr, tc) {
+	/**
+	@param grid: integer[][]
+	@param sr: integer
+	@param sc: integer
+	@param tr: integer
+	@param tc: integer
+	@return: integer
+	*/
+
+	// your code goes here
+   // Check if start and target are the same
+  if (sr === tr && sc === tc) {
+    return 0;
+  }
+  
+  // Create queue and set for visited positions
+  const queue = [[sr, sc, 0]];
+  const visited = new Set([[sr, sc]]);
+  
+  // Define adjacent positions
+  const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  
+  // BFS loop
+  while (queue.length) {
+    const [r, c, d] = queue.shift();
+    
+    // Check if target is reached
+    if (r === tr && c === tc) {
+      return d;
+    }
+    
+    // Check adjacent positions
+    for (const [dr, dc] of directions) {
+      const nr = r + dr;
+      const nc = c + dc;
+      if (nr >= 0 && nr < grid.length && nc >= 0 && nc < grid[0].length && grid[nr][nc] === 1 && !visited.has(`${nr},${nc}`)) {
+        queue.push([nr, nc, d+1]);
+        visited.add(`${nr},${nc}`);
+      }
+    }
+  }
+  
+  // Target not reached
+  return -1;
+}
+const grid = [[1, 1, 1, 1], [0, 0, 0, 1], [1, 0, 1, 1]]
+const sr = 0, sc = 0, tr = 2, tc = 0
+console.log(shortestCellPath(grid, sr, sc, tr, tc))
